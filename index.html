@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link type="text/css" rel="stylesheet" href="stylesheet.css"/>
+    <title>Conway's Game of Life</title>
+  </head>
+  <body>
+
+    <main id="main">
+      <div id="gameHolder">
+        <canvas id="game" width="1120" height="800"></canvas>
+      </div>
+      <div id="buttonHolder" class="noTextSelect">
+        <button id="PauseButton" onclick="togglePauseButton(); return false;">Start</button>
+        <button id="StepButton" onclick="tickGameButton(); return false;">Single Step</button>
+        <button id="ClearButton" onclick="clearBoard(); return false;">Clear</button>
+        <button id="RandomizeButton" onclick="randomizeBoard(); return false;">Randomize</button>
+        <button id="AcornButton" onclick="makeAcorn(); return false;">Make Acorn!</button>
+        <button id="FasterButton" onclick="tickSpeedUp(); return false;">Increase Speed</button>
+        <button id="SlowerButton" onclick="tickSpeedDown(); return false;">Decrease Speed</button>
+      </div>
+    </main>
+
+    <script src="script.js"></script>
+  </body>
+</html>
