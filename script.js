@@ -27,7 +27,7 @@ var TICK_SPEEDS = [20,40,60,80,100,160,280,480,720,1020,1500];
     pauseButton = document.getElementById("PauseButton");
     initGame();
     drawGame();
-    // runGame();
+    runGame();
 })();
 
 function runGame()
@@ -36,8 +36,8 @@ function runGame()
     {
         tickGame();
         drawGame();
-        setTimeout(function() {runGame();}, TICK_SPEEDS[tick_speed_select]);
     }
+    setTimeout(function() {runGame();}, TICK_SPEEDS[tick_speed_select]);
 }
 
 function clearBoard()
@@ -101,7 +101,6 @@ function togglePauseButton()
     {
         pauseButton.innerHTML = "Pause";
         game_running = true;
-        runGame();
     }
 }
 
@@ -177,12 +176,12 @@ function tickGame()
             // if this tile was alive...
             if (game[x][y] == 1)
             {
-                // if it is still alive...
+                // case where it is still alive...
                 if ( (n == 2) || (n == 3) )
                 {
                     updatedGame[x][y] = 1;
                 }
-                // if it is now dead...
+                // case where it is now dead...
                 else
                 {
                     updatedGame[x][y] = -1;
@@ -191,12 +190,12 @@ function tickGame()
             // if this tile was dead...
             else
             {
-                // if it is now alive
+                // case where it is now alive
                 if ( n == 3 )
                 {
                     updatedGame[x][y] = 1;
                 }
-                // or still dead, with kind type of deadness as before
+                // case where still dead, with kind type of deadness as before
                 else
                 {
                     updatedGame[x][y] = game[x][y];
