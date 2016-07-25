@@ -1,7 +1,8 @@
+"use strict";
 
 var acornGame = [[70,50],[70,52],[69,52],[72,51],[73,52],[74,52],[75,52]];
 var game = [];
-var canvas;
+var canvas, canvasDocItem;
 var pauseButton;
 var game_running = false;
 var tick_speed_select = 3;
@@ -222,7 +223,7 @@ function drawGame()
         canvas.fillStyle = COLOR_ALIVE;
         canvas.fill();
       }
-      else if (game[x][y] == 0)
+      else if (game[x][y] === 0)
       {
         canvas.strokeStyle = COLOR_GRID;
         //canvas.strokeStyle = COLOR_GRID_DEAD;
