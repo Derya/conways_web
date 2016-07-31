@@ -67,7 +67,6 @@ function makeAcorn()
 }
 
 function changeSize() {
-  console.log(gameSizeSelect);
   if (gameSizeSelect == GAME_SIZES.length-1)
     gameSizeSelect = 0;
   else
@@ -298,7 +297,6 @@ function getClickCell(event) {
 }
 
 function toggleTile(tile) {
-  console.log(game[tile.x][tile.y]);
   if (game[tile.x][tile.y] == 1)
     game[tile.x][tile.y] = -1;
   else
