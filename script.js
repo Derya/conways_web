@@ -6,17 +6,17 @@ var canvas, canvasDocItem;
 var pauseButton;
 var gameRunning = false;
 var tickSpeedSelect = 3;
+var gameSizeSelect = 1;
 var canvasDocItem, canvas, pauseButton;
 var gridWidth, gridHeight;
+var gameSizeX, gameSizeY;
+var maxX, maxY;
 
-var GAME_SIZE_X = 70;
-var GAME_SIZE_Y = 50;
-var MAX_X = GAME_SIZE_X-1;
-var MAX_Y = GAME_SIZE_Y-1;
 var COLOR_GRID = '#80aaff';
 var COLOR_DEAD = '#ffe4b3';
 var COLOR_ALIVE = '#ffa500';
 var TICK_SPEEDS = [20,40,60,80,100,160,280,480,720,1020,1500];
+var GAME_SIZES = [{x:70,y:50},{x:140,y:100},{x:210,y:150}];
 
 // for game array:
 // 1 => alive
@@ -29,10 +29,6 @@ var TICK_SPEEDS = [20,40,60,80,100,160,280,480,720,1020,1500];
   canvas = canvasDocItem.getContext('2d');
   pauseButton = document.getElementById("PauseButton");
 
-  // calculate grid height and width
-  gridWidth = canvasDocItem.getAttribute("width") / GAME_SIZE_X;
-  gridHeight = canvasDocItem.getAttribute("height") / GAME_SIZE_Y;
-  
   // start up the simulation
   initGame();
   drawGame();
@@ -45,25 +41,40 @@ var TICK_SPEEDS = [20,40,60,80,100,160,280,480,720,1020,1500];
   };
 })();
 
-function getClickCell(event) {
-  // get the pixel locations of the click relative to the canvas
-  var reference = canvasDocItem.getBoundingClientRect();
-  var x = event.clientX - reference.left;
-  var y = event.clientY - reference.top;
+function initGame()
+{
+  // calculate game size
+  gameSizeX = GAME_SIZES[gameSizeSelect].x;
+  gameSizeY = GAME_SIZES[gameSizeSelect].y;
+  maxX = gameSizeX-1;
+  maxY = gameSizeY-1;
 
-  // calculate the canvas tile for this click
-  x = Math.floor(x / gridWidth);
-  y = Math.floor(y / gridHeight);
+  // calculate grid height and width
+  gridWidth = canvasDocItem.getAttribute("width") / gameSizeX;
+  gridHeight = canvasDocItem.getAttribute("height") / gameSizeY;
 
-  return {x: x, y: y};
+  clearBoard();
+  
+  for (var i=0; i < acornGame.length; i++)
+    game[acornGame[i][0]][acornGame[i][1]] = 1;
 }
 
-function toggleTile(tile) {
-  console.log(game[tile.x][tile.y]);
-  if (game[tile.x][tile.y] == 1)
-    game[tile.x][tile.y] = -1;
+// handler for use with the html button
+function makeAcorn()
+{
+  initGame();
+  drawGame();
+}
+
+function changeSize() {
+  console.log(gameSizeSelect);
+  if (gameSizeSelect == GAME_SIZES.length-1)
+    gameSizeSelect = 0;
   else
-    game[tile.x][tile.y] = 1;
+    gameSizeSelect++;
+
+  initGame();
+  drawGame();
 }
 
 // advances the simulation one generation periodically based on the tick speed
@@ -80,10 +91,10 @@ function runGame()
 // for clearing the whole board
 function clearBoard()
 {
-  for (var x=0; x<GAME_SIZE_X; x++)
+  for (var x=0; x<gameSizeX; x++)
   {
     game[x] = [];
-    for (var y=0; y<GAME_SIZE_Y; y++)
+    for (var y=0; y<gameSizeY; y++)
     {
       game[x][y] = 0;
     }
@@ -107,10 +118,10 @@ function tickGameButton()
 // randomizes board
 function randomizeBoard()
 {
-  for (var x=0; x<GAME_SIZE_X; x++)
+  for (var x=0; x<gameSizeX; x++)
   {
     game[x] = [];
-    for (var y=0; y<GAME_SIZE_Y; y++)
+    for (var y=0; y<gameSizeY; y++)
     {
       game[x][y] = Math.round(Math.random());
     }
@@ -147,22 +158,6 @@ function togglePauseButton()
   }
 }
 
-// function for clearing the board and then drawing the initial game
-function initGame()
-{
-  clearBoard();
-  
-  for (var i=0; i < acornGame.length; i++)
-    game[acornGame[i][0]][acornGame[i][1]] = 1;
-}
-
-// handler for use with the html button
-function makeAcorn()
-{
-  initGame();
-  drawGame();
-}
-
 // helper function for counting number of live neighbours to a cell 
 function countNeighbours(x, y)
 {
@@ -193,19 +188,19 @@ function countNeighbours(x, y)
 function getTile(x, y)
 {
   // if not past any borders, return normal value of this tile
-  if (0 <= x && x <= MAX_X && 0 <= y && y <= MAX_Y)
+  if (0 <= x && x <= maxX && 0 <= y && y <= maxY)
     return game[x][y];
 
   // otherwise we need to go to other side of board
   var realX = x;
   var realY = y;
   if (x == -1)
-    realX = MAX_X;
-  else if (x == GAME_SIZE_X)
+    realX = maxX;
+  else if (x == gameSizeX)
     realX = 0;
   if (y == -1)
-    realY = MAX_Y;
-  else if (y == GAME_SIZE_Y)
+    realY = maxY;
+  else if (y == gameSizeY)
     realY = 0;
 
   return game[realX][realY];
@@ -216,10 +211,10 @@ function tickGame()
 {
   var updatedGame = [];
 
-  for (var x=0; x < GAME_SIZE_X; x++)
+  for (var x=0; x < gameSizeX; x++)
   {
     updatedGame[x] = [];
-    for (var y=0; y < GAME_SIZE_Y; y++)
+    for (var y=0; y < gameSizeY; y++)
     {
       var n = countNeighbours(x,y);
       // if this tile was alive...
@@ -261,9 +256,9 @@ function drawGame()
 {
   canvas.clearRect(0, 0, 1120, 800);
 
-  for (var x=0; x < GAME_SIZE_X; x++)
+  for (var x=0; x < gameSizeX; x++)
   {
-    for (var y=0; y < GAME_SIZE_Y; y++)
+    for (var y=0; y < gameSizeY; y++)
     {
       canvas.beginPath();
       canvas.rect(x*gridWidth, y*gridHeight, gridWidth, gridHeight);
@@ -287,4 +282,25 @@ function drawGame()
       }
     }
   }
+}
+
+function getClickCell(event) {
+  // get the pixel locations of the click relative to the canvas
+  var reference = canvasDocItem.getBoundingClientRect();
+  var x = event.clientX - reference.left;
+  var y = event.clientY - reference.top;
+
+  // calculate the canvas tile for this click
+  x = Math.floor(x / gridWidth);
+  y = Math.floor(y / gridHeight);
+
+  return {x: x, y: y};
+}
+
+function toggleTile(tile) {
+  console.log(game[tile.x][tile.y]);
+  if (game[tile.x][tile.y] == 1)
+    game[tile.x][tile.y] = -1;
+  else
+    game[tile.x][tile.y] = 1;
 }

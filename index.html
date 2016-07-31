@@ -12,12 +12,13 @@
       </div>
       <div id="buttonHolder" class="noTextSelect">
         <button id="PauseButton" onclick="togglePauseButton(); return false;">Start</button>
-        <button id="StepButton" onclick="tickGameButton(); return false;">Single Step</button>
-        <button id="ClearButton" onclick="clearBoard(); return false;">Clear</button>
-        <button id="RandomizeButton" onclick="randomizeBoard(); return false;">Randomize</button>
-        <button id="AcornButton" onclick="makeAcorn(); return false;">Make an Acorn</button>
-        <button id="FasterButton" onclick="tickSpeedUp(); return false;">Increase Speed</button>
-        <button id="SlowerButton" onclick="tickSpeedDown(); return false;">Decrease Speed</button>
+        <button onclick="tickGameButton(); return false;">Single Step</button>
+        <button onclick="clearBoard(); return false;">Clear</button>
+        <button onclick="randomizeBoard(); return false;">Randomize</button>
+        <button onclick="makeAcorn(); return false;">Make an Acorn</button>
+        <button onclick="tickSpeedUp(); return false;">Increase Speed</button>
+        <button onclick="tickSpeedDown(); return false;">Decrease Speed</button>
+        <button onclick="changeSize(); return false;">Toggle Size</button>
       </div>
     </main>
 
