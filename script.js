@@ -2,7 +2,7 @@
 
 var acornGame = [[40,20],[40,22],[39,22],[42,21],[43,22],[44,22],[45,22]];
 var game = [];
-var canvas;
+var canvas, canvasDocItem;
 var pauseButton;
 var gameRunning = false;
 var tickSpeedSelect = 3;
@@ -272,7 +272,7 @@ function drawGame()
         canvas.fillStyle = COLOR_ALIVE;
         canvas.fill();
       }
-      else if (game[x][y] == 0)
+      else if (game[x][y] === 0)
       {
         canvas.strokeStyle = COLOR_GRID;
         //canvas.strokeStyle = COLOR_GRID_DEAD;
