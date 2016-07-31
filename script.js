@@ -1,13 +1,16 @@
+"use strict";
 
-var acornGame = [[70,50],[70,52],[69,52],[72,51],[73,52],[74,52],[75,52]];
+var acornGame = [[40,20],[40,22],[39,22],[42,21],[43,22],[44,22],[45,22]];
 var game = [];
 var canvas;
 var pauseButton;
-var game_running = false;
-var tick_speed_select = 3;
+var gameRunning = false;
+var tickSpeedSelect = 3;
+var canvasDocItem, canvas, pauseButton;
+var gridWidth, gridHeight;
 
-var GAME_SIZE_X = 140;
-var GAME_SIZE_Y = 100;
+var GAME_SIZE_X = 70;
+var GAME_SIZE_Y = 50;
 var MAX_X = GAME_SIZE_X-1;
 var MAX_Y = GAME_SIZE_Y-1;
 var COLOR_GRID = '#80aaff';
@@ -25,21 +28,56 @@ var TICK_SPEEDS = [20,40,60,80,100,160,280,480,720,1020,1500];
   canvasDocItem = document.getElementById('game');
   canvas = canvasDocItem.getContext('2d');
   pauseButton = document.getElementById("PauseButton");
+
+  // calculate grid height and width
+  gridWidth = canvasDocItem.getAttribute("width") / GAME_SIZE_X;
+  gridHeight = canvasDocItem.getAttribute("height") / GAME_SIZE_Y;
+  
+  // start up the simulation
   initGame();
   drawGame();
   runGame();
+
+  // handler for user click behavior
+  canvasDocItem.onclick = function(e) {
+    toggleTile(getClickCell(e));
+    drawGame();
+  };
 })();
 
+function getClickCell(event) {
+  // get the pixel locations of the click relative to the canvas
+  var reference = canvasDocItem.getBoundingClientRect();
+  var x = event.clientX - reference.left;
+  var y = event.clientY - reference.top;
+
+  // calculate the canvas tile for this click
+  x = Math.floor(x / gridWidth);
+  y = Math.floor(y / gridHeight);
+
+  return {x: x, y: y};
+}
+
+function toggleTile(tile) {
+  console.log(game[tile.x][tile.y]);
+  if (game[tile.x][tile.y] == 1)
+    game[tile.x][tile.y] = -1;
+  else
+    game[tile.x][tile.y] = 1;
+}
+
+// advances the simulation one generation periodically based on the tick speed
 function runGame()
 {
-  if (game_running)
+  if (gameRunning)
   {
     tickGame();
     drawGame();
   }
-  setTimeout(function() {runGame();}, TICK_SPEEDS[tick_speed_select]);
+  setTimeout(function() {runGame();}, TICK_SPEEDS[tickSpeedSelect]);
 }
 
+// for clearing the whole board
 function clearBoard()
 {
   for (var x=0; x<GAME_SIZE_X; x++)
@@ -51,20 +89,22 @@ function clearBoard()
     }
   }
   pauseButton.innerHTML = "Start";
-  game_running = false;
+  gameRunning = false;
 
   drawGame();
 }
 
+// handler for use with the tick game button
 function tickGameButton()
 {
-  if (!game_running)
+  if (!gameRunning)
   {
     tickGame();
     drawGame();
   }
 }
 
+// randomizes board
 function randomizeBoard()
 {
   for (var x=0; x<GAME_SIZE_X; x++)
@@ -78,32 +118,36 @@ function randomizeBoard()
   drawGame();
 }
 
+// faster tick speed
 function tickSpeedUp()
 {
-  if (tick_speed_select > 0)
-    tick_speed_select--;
+  if (tickSpeedSelect > 0)
+    tickSpeedSelect--;
 }
 
+// slower tick speed
 function tickSpeedDown()
 {
-  if (tick_speed_select < (TICK_SPEEDS.length - 1))
-    tick_speed_select++;
+  if (tickSpeedSelect < (TICK_SPEEDS.length - 1))
+    tickSpeedSelect++;
 }
 
+// pauses or unpauses the game
 function togglePauseButton()
 {
-  if (game_running)
+  if (gameRunning)
   {
     pauseButton.innerHTML = "Resume";
-    game_running = false;
+    gameRunning = false;
   }
   else
   {
     pauseButton.innerHTML = "Pause";
-    game_running = true;
+    gameRunning = true;
   }
 }
 
+// function for clearing the board and then drawing the initial game
 function initGame()
 {
   clearBoard();
@@ -112,12 +156,14 @@ function initGame()
     game[acornGame[i][0]][acornGame[i][1]] = 1;
 }
 
+// handler for use with the html button
 function makeAcorn()
 {
   initGame();
   drawGame();
 }
 
+// helper function for counting number of live neighbours to a cell 
 function countNeighbours(x, y)
 {
   var neighbours = 0;
@@ -142,6 +188,8 @@ function countNeighbours(x, y)
   return neighbours;
 }
 
+// helper function for checking whether a neightbour cell is alive,
+// even nonexistent ones that are off the side of the board
 function getTile(x, y)
 {
   // if not past any borders, return normal value of this tile
@@ -163,6 +211,7 @@ function getTile(x, y)
   return game[realX][realY];
 }
 
+// moves the game forward one generation
 function tickGame()
 {
   var updatedGame = [];
@@ -207,6 +256,7 @@ function tickGame()
   game = updatedGame;
 }
 
+// draws game to canvas
 function drawGame()
 {
   canvas.clearRect(0, 0, 1120, 800);
@@ -216,7 +266,7 @@ function drawGame()
     for (var y=0; y < GAME_SIZE_Y; y++)
     {
       canvas.beginPath();
-      canvas.rect(x*8, y*8, 8, 8);
+      canvas.rect(x*gridWidth, y*gridHeight, gridWidth, gridHeight);
       if (game[x][y] == 1)
       {
         canvas.fillStyle = COLOR_ALIVE;
