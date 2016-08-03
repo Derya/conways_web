@@ -1,0 +1,77 @@
+body {
+  background-color:#80aaff;
+  cursor:default;
+}
+
+#header h2 {
+  text-align: center;
+  font-family: Verdana;
+  color: #FCE374;
+}
+
+canvas {
+  background-color:#f2f2f2;
+  border: 1px solid #80aaff;
+}
+
+#main {
+  margin:auto;
+  width: 1290px;
+}
+
+#gameHolder {
+  width:1120px;
+  height:800px;
+  float:right;
+}
+
+#buttonHolder button {
+  width:130px;
+  margin-left:10px;
+  margin-top:20px;
+  color: #661400;
+}
+
+#buttonHolder {
+  float:left;
+  width:150px;
+  height:800px;
+}
+
+#buttonHolder p {
+  margin:20px;
+}
+
+.noTextSelect {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.btn{
+ display: inline-block;
+ border:1px solid #C9AE34;
+ color: #000000;
+ border-radius: 3px 3px 3px 3px;
+ -webkit-border-radius: 3px 3px 3px 3px;
+ -moz-border-radius: 3px 3px 3px 3px;
+ font-family: Verdana;
+ width: auto;
+ height: auto;
+ padding: 5px 40px;
+ box-shadow: inset 0 1px 0 0 #FFF6CE,inset 0 -1px 0 0 #E3C852,inset 0 0 0 1px #FCE88D,0 2px 4px 0 #D4D4D4;
+ -moz-box-shadow: inset 0 1px 0 0 #FFF6CE,inset 0 -1px 0 0 #E3C852,inset 0 0 0 1px #FCE88D,0 2px 4px 0 #D4D4D4;
+ -webkit-box-shadow: inset 0 1px 0 0 #FFF6CE,inset 0 -1px 0 0 #E3C852,inset 0 0 0 1px #FCE88D,0 2px 4px 0 #D4D4D4;
+ text-shadow: 0 1px 0 #FFFFFF;
+ background-image: linear-gradient(to top, #FCE374, #FCDF5B);
+ background-color: #FCE374;
+}
+.btn:hover, .btn:active{
+ border:1px solid #967D09;
+ box-shadow: inset 0 1px 0 0 #FFF6CE,inset 0 -1px 0 0 #E3C852,inset 0 0 0 1px #FCE88D;
+ -moz-box-shadow: inset 0 1px 0 0 #FFF6CE,inset 0 -1px 0 0 #E3C852,inset 0 0 0 1px #FCE88D;
+ -webkit-box-shadow: inset 0 1px 0 0 #FFF6CE,inset 0 -1px 0 0 #E3C852,inset 0 0 0 1px #FCE88D;
+}
